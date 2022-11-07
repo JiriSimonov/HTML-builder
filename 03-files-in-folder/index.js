@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const src = path.join(__dirname, "secret-folder");
 
 fs.readdir(path.join(__dirname, "secret-folder"), (err, files) => {
   if (err) throw err;
@@ -8,7 +9,7 @@ fs.readdir(path.join(__dirname, "secret-folder"), (err, files) => {
       if (err) throw err;
       if (stats.isFile()) {
         console.log(
-          `${path.basename(file).split(".")[0]} - ${path
+          `${path.basename(file).replace(path.extname(file), "")} - ${path
             .extname(file)
             .slice(1)} - ${stats.size}`
         );
