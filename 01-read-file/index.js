@@ -1,10 +1,19 @@
-const path = require('path');
-const fs = require('fs');
+const fs = require("fs");
+const path = require("path");
 
-fs.readFile(path.join(__dirname, 'text.txt'), function (err, data) {
-    if (err) {
-        throw err;
-    }
-    console.log(data.toString());
-})
-console.log(path.basename(__filename));
+const stream = new fs.ReadStream(path.resolve(__dirname, "text.txt"), {
+  encoding: "utf-8",
+});
+
+stream.on("readable", () => {
+  const data = stream.read();
+  if (data !== null) console.log(data);
+});
+
+stream.on("error", (err) => {
+  if (err.code == "ENOENT") {
+    console.log("File not found");
+  } else {
+    console.log(err);
+  }
+});
