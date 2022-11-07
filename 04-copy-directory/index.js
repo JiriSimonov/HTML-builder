@@ -1,18 +1,22 @@
-let fs = require('fs');
-let path = require('path');
-fs.mkdir(path.join(__dirname, "copy-folder"), {recursive: true}, err => {
+const fs = require('fs');
+const path = require('path');
+const output = path.join(__dirname, "copy-folder"); 
+const input = path.join(__dirname, "files");
+
+
+fs.mkdir(output, {recursive: true}, err => {
     if(err) throw err;
-    fs.readdir(path.join(__dirname, "files"), (err, files) => {
+    fs.readdir(input, (err, files) => {
         if (err) throw err;   
         for (const file of files) {
-            fs.stat(path.join(__dirname, "files", file), (err, stats) => {
+            fs.stat(path.join(input, file), (err, stats) => {
                 if (err) throw err;
                 if (stats.isFile() === true) {
-                    fs.copyFile(path.join(__dirname, "files", file), path.join(__dirname, "copy-folder", file), err => {
+                    fs.copyFile(path.join(input, file), path.join(output, file), err => {
                         if (err) throw err;
                     });
                 }
             });
         }
-    })
+    });
 });
