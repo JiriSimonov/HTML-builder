@@ -49,7 +49,7 @@ const copyFolder = () => {
   });
 };
 const bundleCss = () => {
-  fs.open(path.join(__dirname, "project-dist", "styles.css"), "w", (err) => {
+  fs.open(path.join(__dirname, "project-dist", "style.css"), "w", (err) => {
     if (err) throw err;
     fs.readdir(path.join(__dirname, "styles"), (err, files) => {
       if (err) throw err;
@@ -84,13 +84,17 @@ const bundleHTML = () => {
         if (err) throw err;
         let result = data;
         const namesComponents = [...data.matchAll(/{{(.*)}}/g)].map((el) => el[1]);
+        let counter = 0;
         namesComponents.forEach((component) => {
             fs.readFile(path.join(__dirname, 'components', `${component}.html`), 'utf-8', function (err, data) {
                 if (err) throw err;
                 result = result.replace(`{{${component}}}`, data);
-                fs.writeFile(path.join(__dirname, 'project-dist', 'index.html'), result, function(err) {
-                    if (err) throw err;
-                });
+                counter++;
+                if(counter === namesComponents.length) {
+                    fs.writeFile(path.join(__dirname, 'project-dist', 'index.html'), result, function(err) {
+                        if (err) throw err;
+                    });
+                }
             });
         });
     });
