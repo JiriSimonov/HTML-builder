@@ -45,7 +45,7 @@ const copyFolder = async () => {
     );
   });
 };
-const bundleCss = async () => {
+const bundleCss = () => {
   fs.open(path.join(__dirname, "project-dist", "styles.css"), "w", (err) => {
     if (err) throw err;
     fs.readdir(path.join(__dirname, "styles"), (err, files) => {
@@ -53,11 +53,12 @@ const bundleCss = async () => {
       for (const file of files) {
         fs.stat(path.join(__dirname, "styles", file), (err, stats) => {
           if (err) throw err;
-          if (path.extname(file) === ".css") {
+          if (path.extname(file) === ".css" && stats.isFile()) {
             fs.readFile(
               path.join(__dirname, "styles", file),
               "utf-8",
               function (err, data) {
+                if (err) throw err;
                 let content = data + "\n";
                 fs.appendFile(
                   path.join(__dirname, "project-dist", "styles.css"),
