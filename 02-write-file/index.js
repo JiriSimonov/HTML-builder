@@ -1,10 +1,11 @@
 const fs = require("fs");
+const path = require('path');
 const { stdout, stdin } = process;
 
 stdout.write("Привет! Какой текст добавим? \n");
 
 function setText(text) {
-  fs.appendFile("02-write-file/text.txt", text, err => {
+  fs.appendFile(path.join(__dirname, 'text.txt'), text, err => {
     if (err) throw err;
   });
 }
